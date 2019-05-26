@@ -1,11 +1,7 @@
-## JAVA 知识点集合
+该项目用于记录工作中遇到的问题、解决方法、相关知识点等。
 
- 
+### Java 
 
-### 并发编程
+### Goland
 
-> 1. CompletableFuture  https://www.sczyh30.com/posts/Java/java-8-completable-future/
-> 2. ThreadPoolExecutor机制 https://www.todyblog.com/article?articleId=vg6df81qpqh5lrjgmisvl5p43t
-
-### 开发模式
-> 1. 发布-订阅 https://cloud.tencent.com/developer/article/1123725
+###Crawler
