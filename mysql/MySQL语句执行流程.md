@@ -1,7 +1,5 @@
 # MySQL 语句执行流程
 
-## 查询语句执行流程
-
 大体来说，MySQL 可以分为 Server 层和存储引擎层两部分。
 
 Server 层包括连接器、查询缓存、分析器、优化器、执行器等，涵盖 MySQL 的大多数核心服务功能，以及所有的内置函数（如日期、时间、数学和加密函数等），所有跨存储引擎的功能都在这一层实现，比如存储过程、触发器、视图等。
@@ -10,7 +8,11 @@ Server 层包括连接器、查询缓存、分析器、优化器、执行器等�
 
 ![](http://yoyadoc-image.oss-cn-shanghai.aliyuncs.com/blog/0d2070e8f84c4801adbfa03bda1f98d9.png)
 
-​																									**MySQL 基本架构示意图**
+​											**MySQL 基本架构示意图**
+
+
+
+## 查询语句执行流程
 
 
 
@@ -23,7 +25,7 @@ Server 层包括连接器、查询缓存、分析器、优化器、执行器等�
 - 如果用户名或密码不对，你就会收到一个"Access denied for user"的错误，然后客户端程序结束执行。
 - 如果用户名密码认证通过，连接器会到权限表里面查出你拥有的权限。之后，这个连接里面的权限判断逻辑，都将依赖于此时读到的权限。*这就意味着，一个用户成功建立连接后，即使你用管理员账号对这个用户的权限做了修改，也不会影响已经存在连接的权限。修改完成后，只有再新建的连接才会使用新的权限设置。*
 
-客户端如果太长时间没动静，连接器就会自动将它断开。这个时间是由参数 wait_timeout 控制的，默认值是 8 小时。
+客户端如果太长时间没动静，连接器就会自动将它断开。这个时间是由参数 `wait_timeout` 控制的，默认值是 8 小时。
 
 ### 查询缓存
 
@@ -54,9 +56,9 @@ mysql> select SQL_CACHE * from T where ID=10；
 如果你的语句不对，就会收到 “You have an error in your SQL syntax” 的错误提醒，比如下面这个语句 select 少打了开头的字母 “s”。
 
 ```mysql
-mysql> elect * from t where ID=1;
+mysql> elect * from t where ID=10;
 
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'elect * from t where ID=1' at line 1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'elect * from t where ID=10' at line 1
 ```
 
 一般语法错误会提示第一个出现错误的位置，所以你要关注的是紧接 “use near” 的内容。
@@ -66,6 +68,22 @@ ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that 
 经过了分析器，MySQL 就知道你要做什么了。在开始执行之前，还要先经过优化器的处理。
 
 **优化器是在表里面有多个索引的时候，决定使用哪个索引；或者在一个语句有多表关联（join）的时候，决定各个表的连接顺序**。
+
+
+
+**Tips** 
+
+- 优化器选择索引的判断标准有**扫描行数**、**是否使用临时表**、**是否排序**等因素。
+
+  MySQL 并不能精确知道满足某个条件的记录数，而是根据统计信息（*即索引的区分度，索引上不同的值越多，区分度越好*）来估算记录数（我们称之为*基数*，MySQL 会采用采样统计的方法来估算基数，采样统计的时候，InnoDB 默认会选择 N 个数据页，统计这些页面上的不同值，得到一个平均值，然后乘以这个索引的页面数，就得到了这个索引的基数。）。
+
+  我们可以使用 `show index` 方法来查看索引的基数。
+
+- 对于由于 MySQL 没有准确地判断出扫描行数而错选索引的情况，可以使用命令 `analyze table T` 命令来重新统计索引信息。
+
+- 对于其他优化器误判的情况，可以在应用端使用 `force index` (*select id, name, a from t force index(a) where a > 1*)来强制指定索引，也可以通过修改语句来引导优化器，还可以通过增加和删除索引来绕过这个问题。
+
+  
 
 ### 执行器
 
@@ -78,6 +96,8 @@ ERROR 1142 (42000): SELECT command denied to user 'b'@'localhost' for table 'T'
 ```
 
 如果有权限，就打开表继续执行。打开表的时候，执行器就会根据表的引擎定义，去使用这个引擎提供的接口。
+
+
 
 ## 更新语句执行流程
 

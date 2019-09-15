@@ -2,7 +2,7 @@
 
 ## 常见索引模型
 
-索引的出现是为了提高查询效率，但是实现索引的方式却有很多种，比较常见和简单的有**哈希表、有序数组和搜索树**。
+索引的出现是为了提高查询效率，但是实现索引的方式却有很多种，比较常见和简单的有**哈希表**、**有序数组**和**搜索树**。
 
 ![](http://yoyadoc-image.oss-cn-shanghai.aliyuncs.com/blog/14400663-c3f7d5d52f0a4f9d.png)
 
@@ -60,15 +60,15 @@
 
 
 
-**Tips: “N叉树”的 N 值在 MySQL 中是可以被人工调整的么？**
+**Tips: “N 叉树”的 N 值在 MySQL 中是可以被人工调整的么？**
 
 > 1. 通过改变 key 值来调整
 >
->    N叉树中非叶子节点存放的是索引信息，索引包含 Key 和 Point 指针。Point 指针固定为6个字节，假如 Key 为10个字节，那么单个索引就是16个字节。如果B+树中页大小为16K，那么一个页就可以存储1024个索引，此时N就等于1024。我们通过改变 Key 的大小，就可以改变N的值
+>       N 叉树中非叶子节点存放的是索引信息，索引包含 Key 和 Point 指针。Point 指针固定为 6 个字节，假如 Key 为 10 个字节，那么单个索引就是 16 个字节。如果 B+ 树中页大小为 16K，那么一个页就可以存储 1024 个索引，此时 N 就等于 1024。我们通过改变  Key 的大小，就可以改变 N 的值
 >
 > 2. 改变 page 的大小
 >
->    MsSQL 5.6 以后可以通过 page 大小来间接控制
+>       MySQL 5.6 以后可以通过 page 大小来间接控制
 
 ## InnoDB 索引模型
 
@@ -186,7 +186,7 @@ insert into T values(100,1, 'aa'),(200,2,'bb'),(300,3,'cc'),(500,5,'ee'),(600,6,
 
 当你的逻辑需求是查到所有名字是“张三”的人时，可以快速定位到 ID4，然后向后遍历得到所有需要的结果。
 
-如果你要查的是所有名字第一个字是“张”的人，你的 SQL 语句的条件是"where name like ‘张 %’"。这时，你也能够用上这个索引，查找到第一个符合条件的记录是 ID3，然后向后遍历，直到不满足条件为止。
+如果你要查的是所有名字第一个字是“张”的人，你的 SQL 语句的条件是 "where name like '张 %'"。这时，你也能够用上这个索引，查找到第一个符合条件的记录是 ID3，然后向后遍历，直到不满足条件为止。
 
 可以看到，不只是索引的全部定义，只要满足最左前缀，就可以利用索引来加速检索。这个最左前缀可以是联合索引的最左 N 个字段，也可以是字符串索引的最左 M 个字符。
 
@@ -216,11 +216,15 @@ mysql> select * from tuser where name like '张 %' and age=10 and ismale=1;
 
 **而 MySQL 5.6 引入的索引下推优化（index condition pushdown)， 可以在索引遍历过程中，对索引中包含的字段先做判断，直接过滤掉不满足条件的记录，减少回表次数**。
 
-![](http://yoyadoc-image.oss-cn-shanghai.aliyuncs.com/blog/b32aa8b1f75611e0759e52f5915539ac.jpg)
 
-​																										**无索引下推执行流程**
 
-![](http://yoyadoc-image.oss-cn-shanghai.aliyuncs.com/blog/76e385f3df5a694cc4238c7b65acfe1b.jpg)
+无索引下推执行流程:
 
-​																										**索引下推执行流程**
+<img src="http://yoyadoc-image.oss-cn-shanghai.aliyuncs.com/blog/b32aa8b1f75611e0759e52f5915539ac.jpg"  />
+
+
+
+索引下推执行流程:
+
+<img src="http://yoyadoc-image.oss-cn-shanghai.aliyuncs.com/blog/76e385f3df5a694cc4238c7b65acfe1b.jpg"  />
 
