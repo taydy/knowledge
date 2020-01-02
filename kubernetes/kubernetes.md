@@ -38,7 +38,7 @@ Linux Cgroups 的全称是 Linux Control Group。它最主要的作用，就是�
 
 *Docker 在镜像的设计中，引入了层（layer）的概念。也就是说，用户制作镜像的每一步操作，都会生成一个层，也就是一个增量 rootfs。这用到了一种叫作联合文件系统（Union File System）的能力。Union File System 也叫 UnionFS，最主要的功能是将多个不同位置的目录联合挂载（union mount）到同一个目录下。*
 
-![8a7b5cfabaab2d877a1d4566961edd5f.png](https://yoyadoc.com/upload/images/8a7b5cfabaab2d877a1d4566961edd5f_1543572464575.png)
+![8a7b5cfabaab2d877a1d4566961edd5f.png](http://yoyadoc.com/upload/images/8a7b5cfabaab2d877a1d4566961edd5f_1543572464575.png)
 
 
 ### 只读层
@@ -59,7 +59,7 @@ Linux Cgroups 的全称是 Linux Control Group。它最主要的作用，就是�
 
 最终，这些层都被联合挂载到 /var/lib/docker/aufs/mnt 目录下。
 
-![2b1b470575817444aef07ae9f51b7a18.png](https://yoyadoc.com/upload/images/2b1b470575817444aef07ae9f51b7a18_1543572335982.png)
+![2b1b470575817444aef07ae9f51b7a18.png](http://yoyadoc.com/upload/images/2b1b470575817444aef07ae9f51b7a18_1543572335982.png)
 
 一个“容器”，实际上是一个由 Linux Namespace、Linux Cgroups 和 rootfs 三种技术构建出来的进程的隔离环境。
 
@@ -128,7 +128,7 @@ Pod，而不是容器，才是 Kubernetes 项目中的最小编排单位。将�
 
 以下为Pod 中几个重要字段的含义和用法：
 
-###NodeSelector
+### NodeSelector
 
 NodeSelector：是一个供用户将 Pod 与 Node 进行绑定的字段，
 
@@ -551,7 +551,7 @@ spec:
 
 
 
-###status
+### status
 
 Pod 生命周期的变化，主要体现在 Pod API 对象的 **Status 部分**。
 
