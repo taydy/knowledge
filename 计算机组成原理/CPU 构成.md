@@ -1,4 +1,4 @@
-## CPU 构成
+## CPU 构成
 
 逻辑上，我们可以认为，CPU 其实就是由一堆寄存器组成的。而寄存器就是 CPU 内部，由多个触发器(Flip Flop)或者锁存器(Latches)组成的简单电路。
 
@@ -6,7 +6,7 @@
 
 N 个触发器或者锁存器，就可以组成一个 N 位(Bit)的寄存器，能够保存 N 位的数据。比方说，我们用的 64 位 Intel 服务器，寄存器就是 64 位的。
 
-![](https://tva1.sinaimg.cn/large/006tNbRwgy1gax20zihnfj31gg0u0qc4.jpg)
+<img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gbemmgpntnj31gg0u0qc4.jpg" style="zoom: 33%;" />
 
 一个 CPU 里面会有很多种不同功能的寄存器。这里给你介绍三种比较特殊的。
 
@@ -30,9 +30,9 @@ SRAM 被称为静态存储器，只有在通电状态，里面的数据才能保
 
 在 SRAM 里，一个比特的数据，需要 6~8 个晶体管，所以 SRAM 的存储密度不高，同样的物理空间下，能够存储的数据有限。
 
-正因为 SRAM 电路简单，所以访问速度非常快，CPU Cacge(CPU 高速缓存) 便是用的 SRAM。
+正因为 SRAM 电路简单，所以访问速度非常快，CPU Cache(CPU 高速缓存) 便是用的 SRAM。
 
-![](https://tva1.sinaimg.cn/large/006tNbRwgy1gb24p1l1zwj30zk0qogmq.jpg)
+<img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gb24p1l1zwj30zk0qogmq.jpg" style="zoom: 33%;" />
 
 在 CPU 里，通常会有 L1、L2、L3 这样三层高速缓存。
 
@@ -48,17 +48,17 @@ DRAM(Dynamic Random Access Memory, 动态随机存取存储器)被称为动态�
 
 DRAM 的一个比特，只需要一个晶体管和一个电容就能存储。所以，DRAM 在同样的物理空间下，能够存储的数据也就更多。
 
-因为数据时存储在电容里的，电容会不断漏电，多以需要定时刷新充电，才能保持数据不丢失。
+因为数据是存储在电容里的，电容会不断漏电，所以需要定时刷新充电，才能保持数据不丢失。
 
 DRAM 的数据访问电路和刷新电路都比 SRAM 更复杂，所以访问延时也就更长。
 
 ### 存储器的层级结构
 
-![存储器的层次关系图](https://tva1.sinaimg.cn/large/006tNbRwgy1gb2sqcbstvj30vq0gbgng.jpg)
+<img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gb2sqcbstvj30vq0gbgng.jpg" alt="存储器的层次关系图" style="zoom: 50%;" />
 
 从 Cache、内存，到 SSD 和 HDD 硬盘，一台现代计算机中，就用上了所有这些存储器设备。其中，容量越小的设备速度越快，而且，CPU 并不是直接和每一种存储器设备打交道，而是每一种存储器设备，只和它相邻的存储设备打交道。比如，CPU Cache 是从内存里加载而来的，或者需要写回内存，并不会直接写回数据到硬盘，也不会直接从硬盘加载数据到 CPU Cache 中，而是先加载到内存，再从内存加载到 Cache 中。
 
-这样，各个存储器之和相邻的一层存储器打交道，并且随着一层层向下，存储器的容量逐层增大，访问速度逐层变慢，而单位存储成本也逐层下降，也就构成了存储器层次结构。
+这样，各个存储器只和相邻的一层存储器打交道，并且随着一层层向下，存储器的容量逐层增大，访问速度逐层变慢，而单位存储成本也逐层下降，也就构成了存储器层次结构。
 
 ![](https://tva1.sinaimg.cn/large/006tNbRwgy1gb2stwjmm1j30vq0gcdhm.jpg)
 
@@ -99,7 +99,7 @@ for (int i = 0; i < arr.length; i += 16) arr[i] *= 3
 
 ![](https://tva1.sinaimg.cn/large/006tNbRwgy1gb2t3f5bloj30vq0gv0t2.jpg)
 
-在开始的程序中，运行程序的时间主要花在了将对应的数据从内存中读取出来，加载到 CPU Cache 中。CPU 从内存里速度数据到 CPU Cache 的过程中，是一小块一小块来读的，而不是按照单个数组元素来读取。这样一小块一小块的数据，在 CPU Cache 里，叫做 Cache Line(缓存块, 通常大小为 64 字节)。
+在开始的程序中，运行程序的时间主要花在了将对应的数据从内存中读取出来，加载到 CPU Cache 中。CPU 从内存里读取数据到 CPU Cache 的过程中，是一小块一小块来读的，而不是按照单个数组元素来读取。这样一小块一小块的数据，在 CPU Cache 里，叫做 Cache Line(缓存块, 通常大小为 64 字节)。
 
 ### 直接映射 Cache
 
@@ -113,9 +113,9 @@ for (int i = 0; i < arr.length; i += 16) arr[i] *= 3
 
 比如说，主内存被分为 0~31 号这样 32 个块(缓存块的数量通常会被设置为 2 的 N 次方)。我们一共有 8 个缓存快，用户想要访问第 21 号内存块，如果 21 号内存块内存在缓存快中的话，那它一定在 5 号缓存快(21 mod 8 = 5，实际计算中会直接取地址的 N 位)中。
 
-![](https://tva1.sinaimg.cn/large/006tNbRwgy1gb2tijt7aaj30vq0m1753.jpg)
+<img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gb2tijt7aaj30vq0m1753.jpg" style="zoom: 50%;" />
 
-![](https://tva1.sinaimg.cn/large/006tNbRwgy1gb2tkkd7saj30vq0l6q3m.jpg)
+<img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gb2tkkd7saj30vq0l6q3m.jpg" style="zoom:50%;" />
 
 如上图所示，5、13、21、29 内存块都对应着 5 号缓存块，那么假设想要获取 21 号内存块， CPU 如何知道 5 号缓存块里面的数据究竟是不是 21 号内存块呢？
 
@@ -146,13 +146,13 @@ CPU 在读取数据的时候，并不是要读取整个 Block, 而是读取一�
 
 因为 CPU Cache 的访问速度要比主内存快很多，而在 CPU Cache 里面，L1、L2 Cache 也要比 L3 Cache 快。所以 CPU 始终都是尽可能从 CPU Cache 中获取数据，而不是每次都要从主内存里面读取。
 
-![](https://tva1.sinaimg.cn/large/006tNbRwgy1gb2w5gqkxej31570u00uo.jpg)
+<img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gb2w5gqkxej31570u00uo.jpg" style="zoom: 33%;" />
 
 写入 Cache 的性能也要比写入主内存快，那么 CPU 如何将对 Cache 中数据的修改同步到主内存呢？
 
 ### 写直达(Write-Through)
 
-![](https://tva1.sinaimg.cn/large/006tNbRwgy1gb2w8zl9yxj30ry1jgdi0.jpg)
+<img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gb2w8zl9yxj30ry1jgdi0.jpg" style="zoom:33%;" />
 
 最简单的一种写入策略，叫作写直达（Write-Through）。在这个策略里，每一次数据都要写入到主内存里面。在写直达的策略里面，写入前，我们会先去判断数据是否已经在 Cache 里面了。如果数据已经在 Cache 里面了，我们先把数据写入更新到 Cache 里面，再写入到主内存里面；如果数据不在 Cache 里，我们就只更新主内存。
 
@@ -160,7 +160,7 @@ CPU 在读取数据的时候，并不是要读取整个 Block, 而是读取一�
 
 ### 写回(Write-Back)
 
-![](https://tva1.sinaimg.cn/large/006tNbRwgy1gb2wcx0k1cj30u01m6n2l.jpg)
+<img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gb2wcx0k1cj30u01m6n2l.jpg" style="zoom:33%;" />
 
 在 CPU Cache 的写入策略里，还有一种策略就叫作写回（Write-Back）。这个策略里，我们不再是每次都把数据写入到主内存，而是只写到 CPU Cache 里。只有当 CPU Cache 里面的数据要被“替换”的时候，我们才把数据写入到主内存里面去。
 
@@ -174,7 +174,7 @@ CPU 在读取数据的时候，并不是要读取整个 Block, 而是读取一�
 
 此时 2 号核心尝试从内存里读取数据时，结果读到的是一个错误的数据。这个问题，就是所谓的缓存一致性问题。
 
-![](https://tva1.sinaimg.cn/large/006tNbRwgy1gb2wob6ue9j31q40tm0ws.jpg)
+<img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gb2wob6ue9j31q40tm0ws.jpg" style="zoom:50%;" />
 
 为了解决这个缓存不一致的问题，我们就需要有一种机制，来同步两个不同核心里面的缓存数据。
 
@@ -184,7 +184,7 @@ CPU 在读取数据的时候，并不是要读取整个 Block, 而是读取一�
 
 ### 总线嗅探机制
 
-总线嗅探机制本质上就是吧所有的读写请求通过总线(Bus)广播给所有的 CPU 核心，然后让各个核心去"嗅探"这些请求，再根据本地的情况惊醒响应。
+总线嗅探机制本质上就是把所有的读写请求通过总线(Bus)广播给所有的 CPU 核心，然后让各个核心去"嗅探"这些请求，再根据本地的情况做出响应。
 
 总线本身就是一个特别适合广播进行数据传输的机制，所以总线嗅探这个办法也是我们日常使用的 Intel CPU 进行缓存一致性处理的解决方案。
 
@@ -196,7 +196,7 @@ MESI 协议也叫**写失效**(Write Invalidate)协议。在写失效协议里�
 
 写广播在实现上自然很简单，但是写广播需要占用更多的总线带宽。写失效只需要告诉其他的 CPU 核心，哪一个内存地址的缓存失效了，但是写广播还需要把对应的数据传输给其他 CPU 核心。
 
-![写失效](https://tva1.sinaimg.cn/large/006tNbRwgy1gb2xf639ilj30u01o1akq.jpg)
+<img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gb2xf639ilj30u01o1akq.jpg" alt="写失效" style="zoom:50%;" />
 
 MESI 协议来自于 Cache Line 的四种不停的标记，分别是：
 
@@ -211,4 +211,4 @@ MESI 协议来自于 Cache Line 的四种不停的标记，分别是：
 
 整个 MESI 的状态，可以用一个有限状态机来表示它的状态流转。需要注意的是，对于不同状态触发的事件操作，可能来自于当前 CPU 核心，也可能来自总线里其他 CPU 核心广播出来的信号。
 
-![](https://tva1.sinaimg.cn/large/006tNbRwgy1gb2yi5sa7dj30xb0u010s.jpg)
+<img src="https://tva1.sinaimg.cn/large/006tNbRwgy1gb2yi5sa7dj30xb0u010s.jpg" style="zoom:50%;" />
