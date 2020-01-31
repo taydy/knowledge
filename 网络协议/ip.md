@@ -74,7 +74,7 @@ lo 全称是 **loopback**，又称**环回接口**，往往会被分配到 127.0
 
 UP 表示网卡处于启动状态；BROADCAST 表示这个网卡有广播地址，可以发送广播包；MULTICAST 表示网卡可以发送多播包；LOWER_UP 表示 L1 是启动的，也即插着网线。
 
-MTU 1200 表示最大传输单元 MTU 为 1500，这是以太网的默认值。
+MTU 1500 表示最大传输单元 MTU 为 1500，这是以太网的默认值。
 
 qdisc 全称是 **queueing discipline**，中文叫**排队规则**。内核如果需要通过某个网络接口发送数据包，它都需要按照为这个接口配置的 qdisc（排队规则）把数据包加入队列。
 
@@ -126,7 +126,7 @@ $ sudo ip link set up eth1
 
 3. **Select DCHP Offer**
 
-   新机器收到回复后，会选择其中一个 DCHP Offer，一般是最先到达的那个，并且回想网络发送一个 DCHP Request 广播数据包，包中包含客户端的 MAC 地址、接收的租约中的 IP 地址、提供此租约的 DCHP 服务器地址等。
+   新机器收到回复后，会选择其中一个 DCHP Offer，一般是最先到达的那个，并且会向网络发送一个 DCHP Request 广播数据包，包中包含客户端的 MAC 地址、接收的租约中的 IP 地址、提供此租约的 DCHP 服务器地址等。
 
    ![](https://tva1.sinaimg.cn/large/006tNbRwgy1gb7ndbgl5qj30dk08fmy2.jpg)
 
