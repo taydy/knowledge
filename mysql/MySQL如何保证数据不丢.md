@@ -12,7 +12,7 @@
 
 如上图所示，每个线程独享一份 binlog cache, 但是共用一份 binlog 文件。
 
-- 图中的 write, 指的是吧日志写到文件系统的 page cache，并没有吧数据持久化到磁盘，所以速度比较快。
+- 图中的 write, 指的是把日志写到文件系统的 page cache，并没有把数据持久化到磁盘，所以速度比较快。
 - 图中的 fsync，才是将数据持久化到磁盘的操作。一般情况下，fsync 才占磁盘的 IOPS.
 
 write 和 fsync 的时机，由参数 sync_binlog 控制：
@@ -49,7 +49,7 @@ commit;
 事务的 redo log 可能存在三种状态：
 
 1. 存在 redo log buffer 中，物理上是在 MySQL 进程内存中，就是图中的红色部分；
-2. 写到磁盘(write)，但是没有持久化(fsync)，物理上是在文件系统的 page cache中，也就是图中的黄色部分；
+2. 写到磁盘(write)，但是没有持久化(fsync)，物理上是在文件系统的 page cache 中，也就是图中的黄色部分；
 3. 持久化到磁盘，对应的是 hard disk，也就是图中的绿色部分。
 
 为了控制 redo log 的写入策略，InnoDB 提供了 innodb_flush_log_at_trx_commit 参数，它有三种可能取值：
