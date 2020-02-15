@@ -384,3 +384,38 @@ public class AnnotationBeanNameGenerator implements BeanNameGenerator {
 
 
 
+## 注册 Spring Bean
+
+### BeanDefinition 注册
+
+- XML 配置元信息
+
+  - <bean name="..." ... />
+
+- Java 注解配置元信息
+
+  - @Bean
+  - @Component
+  - @Import
+
+- Java API 配置元信息
+
+  - 命名方式：**BeanDefinitionRegistry#registerBeanDefinition(String,BeanDefinition)**
+
+  - 非命名方式：
+
+    **BeanDefinitionReaderUtils#registerWithGeneratedName(AbstractBeanDefinition,Be**
+
+    **anDefinitionRegistry)**
+
+  - 配置类方式：**AnnotatedBeanDefinitionReader#register(Class...)**
+
+### Spring Bean 初始化
+
+- @PostConstruct 标注方法
+- 实现 InitializingBean 接口的 afterPropertiesSet() 方法
+- 自定义初始化方法
+  - XML 配置：<bean init-method=”init” ... />
+  - Java 注解：@Bean(initMethod=”init”)
+  - Java API：AbstractBeanDefinition#setInitMethodName(String)
+
